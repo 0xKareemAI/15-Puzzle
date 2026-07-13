@@ -38,8 +38,12 @@ first we see all possiple tiles in the entire universe that can move, then we fi
 1- permutation parity: 
     when i was trying to shuffle the board randomly i used the easiest method
     ```tiles.sort(() => Math.random() - 0.5);```
-    , but gemini said that i'll get states where it will be impossiple to solvecause something called permutation parity(idk what is that but i will)
+    , but gemini said that i'll get states where it will be impossiple to solvecause something called permutation parity(idk what is this but i will know , it's a math thing needs study :))
 the solution is :
 we should start from an already solved puzzle and move it some random moves to get a semi shuffled board and the real solution will be the reverse of that moves
+
+2- wining alert (concurrency quirk)
+after the last move i see the wining alert before the tile take place (before the board renders) that happens because the js is single threaded and the alert blocks the thread till we click ok 
+the solution: i used setTimeOut cause it make a delay give time to rendering "but i found that when i even make the time 0 it still work because there's a minimum waiting for every browser usually 4ms and coz how it works behind the scene (things about call stack, new thing to learn :))" 
 
 
