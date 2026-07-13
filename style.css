@@ -1,0 +1,31 @@
+body{
+    display : flex;
+    justify-content : center;
+    align-items : center;
+}
+
+#board{
+    width : 500px;
+    height : 500px;
+    border : 1px solid black;
+    border-radius : 5px;
+    display : grid;
+    grid-template-columns : repeat(4, 1fr);
+    grid-template-rows : repeat(4, 1fr);
+    gap : 5px;
+}
+
+.tile{
+    background-color : #3498db;
+    color : white;
+    border-radius : 5px;
+    justify-content : center;
+    align-items : center;
+    display : flex;
+    cursor : pointer;
+}
+
+.tile.empty{
+    background-color : transparent;
+    cursor : default;
+}
