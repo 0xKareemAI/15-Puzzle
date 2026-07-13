@@ -23,3 +23,23 @@ we check horizintaly and vertically
 horizintaly : they must be in the same row and there columns next to each other that means the absoulte value of the columns value = 1 
 vertically: the same as horizontally imagine we flip the board 90 degree
 
+## my code ,my idea, i love to highlight
+```js
+const possibleTiles = [emptyIndex - 1, emptyIndex + 1, emptyIndex - 4, emptyIndex + 4];
+
+        const validTiles = possibleTiles.filter(move => move >= 0 && move < 16 && isAdjacent(move, emptyIndex));
+
+        const randomMove = validTiles[Math.floor(Math.random() * validTiles.length)];
+```
+first we see all possiple tiles in the entire universe that can move, then we filter them by these conditions, then we pick a random tile from them, now we have a random valid tile to move
+
+## Problems i faced 
+
+1- permutation parity: 
+    when i was trying to shuffle the board randomly i used the easiest method
+    ```tiles.sort(() => Math.random() - 0.5);```
+    , but gemini said that i'll get states where it will be impossiple to solvecause something called permutation parity(idk what is that but i will)
+the solution is :
+we should start from an already solved puzzle and move it some random moves to get a semi shuffled board and the real solution will be the reverse of that moves
+
+
