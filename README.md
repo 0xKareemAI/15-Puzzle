@@ -1,6 +1,18 @@
 # 15-Puzzle
 15-puzzle where one needs to place in order 15 square pieces in a square box.
 
+## Key Features
+1- Smart Shuffle to ensure that the output array is solvable
+2- game dashboard to track move counts and passed time to calculate the best times 
+3- store the highest score in local storage
+------
+## feetures to be added 
+1- Auto-solve feature
+2- hints to how to solve this puzzle 
+3- move tiles by keyboard arrows
+4- levels feature (easy , medium , hard)
+
+
 ## Board
 I used an 1d array to simulate a 4X4 grid.
 give every tile a value and the empty tile carrying null
@@ -32,6 +44,8 @@ const possibleTiles = [emptyIndex - 1, emptyIndex + 1, emptyIndex - 4, emptyInde
         const randomMove = validTiles[Math.floor(Math.random() * validTiles.length)];
 ```
 first we see all possiple tiles in the entire universe that can move, then we filter them by these conditions, then we pick a random tile from them, now we have a random valid tile to move
+
+
 
 ## Problems i faced 
 

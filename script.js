@@ -1,6 +1,73 @@
+const moveDisplay = document.getElementById("moveCount");
+const timerDisplay = document.getElementById("timer");
 const board = document.getElementById("board");
 
-const tiles = [...Array(15).keys()].map(i => i + 1).concat(null);
+const winningState = [...Array(15).keys()].map(i => i + 1).concat(null);
+const tiles = [...winningState];
+
+let moveCount = 0;
+let secondsElapsed = 0;
+let timeInterval = null;
+let isGameActive = false;
+
+
+function startTimer(){
+    if (timeInterval) return;
+    isGameActive = true;
+    timeInterval = setInterval(() => {
+        secondsElapsed++;
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function stopTimer(){
+    clearInterval(timeInterval);
+    timeInterval = null;
+    isGameActive = false;
+}
+
+function resetTimer(){
+    stopTimer();
+    secondsElapsed = 0;
+    updateTimerDisplay();
+}
+
+function updateTimerDisplay(){
+    if (moveDisplay) moveDisplay.textContent = moveCount;
+    if (timerDisplay) timerDisplay.textContent = secondsElapsed;
+}
+
+function formatTime(seconds){
+    const mins = Math.floor(seconds / 60);
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+}
+
+
+function saveHighScore(){
+    const bestMoves = localStorage.getItem("bestMoves");
+    const bestTime = localStorage.getItem("bestTime");
+
+    if (!bestMoves || moveCount < parseInt(bestMoves)){
+        localStorage.setItem("bestMoves", moveCount);
+    }
+
+    if (!bestTime || secondsElapsed < parseInt(bestTime)){
+        localStorage.setItem("bestTime", secondsElapsed);
+    }
+
+}
+
+function loadHighScore(){
+    const bestMoves = localStorage.getItem("bestMoves") || "None";
+    const bestTime = (localStorage.getItem("bestTime")) ? formatTime(parseInt(localStorage.getItem("bestTime"))) : "None";
+
+    return { bestMoves, bestTime };
+}
+
+    
+
+
 
 function renderBoard(){
     board.innerHTML = "";
@@ -32,25 +99,30 @@ function arraysEqual(arr1, arr2) {
 }
 
 function checkWin(){
-    const winningState = [...Array(15).keys()].map(i => i + 1).concat(null);
-    if (arraysEqual(tiles, winningState)) {
-        
-        setTimeout(() => {
-            alert("Congratulations! You won!");
-        }, 0);// i jsut added a timeout to make sure the alert is shown after the board is rendered
-        return true;
-    }
-    return false;
+    
+    return arraysEqual(tiles, winningState);
 }
 
 function moveTile(index){
     const emptyIndex = tiles.indexOf(null);
 
     if (isAdjacent(index, emptyIndex)){
+
+        if (!isGameActive) startTimer();
         tiles[emptyIndex] = tiles[index];
         tiles[index] = null;
-        checkWin();
+
+        moveCount++;
+        if (checkWin()) {
+            stopTimer();
+            saveHighScore();
+            setTimeout(() => {
+                alert("Congratulations! You won!");
+            }, 0);
+        }
         renderBoard();
+        updateTimerDisplay();
+
     }
 
 }
@@ -74,6 +146,13 @@ function shuffleBoard(){
     renderBoard();
 }
 
+function resetGame(){
+    moveCount = 0;
+    resetTimer();
+    shuffleBoard();
+}
 
-shuffleBoard();
-
+(function startGame(){
+    resetTimer();
+    shuffleBoard();
+})();
